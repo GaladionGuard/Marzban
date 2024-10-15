@@ -208,9 +208,9 @@ class V2rayShareLink(str):
 
         if net == "grpc":
             if multiMode:
-                payload["mode"] = "multi"
+                payload["type"] = "multi"
             else:
-                payload["mode"] = "gun"
+                payload["type"] = "gun"
 
         elif net == "splithttp":
             # before 1.8.23
