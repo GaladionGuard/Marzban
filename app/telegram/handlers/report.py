@@ -103,18 +103,23 @@ def report_user_modification(
         keyboard=BotKeyboard.user_menu({'username': username, 'status': 'active'}, with_back=False))
 
 
-def report_user_deletion(username: str, by: str, admin: Admin = None):
+def report_user_deletion(username: str, by: str, admin: Admin = None, user_lifetime_traffic: int = 0):
+    user_lifetime_traffic_GB = user_lifetime_traffic / (1024 ** 3)
+    user_lifetime_traffic_GB = round(user_lifetime_traffic_GB, 2)
+    user_lifetime_traffic_GB = f"{user_lifetime_traffic_GB} GB"
     text = '''\
 🗑 <b>#Deleted</b>
 ➖➖➖➖➖➖➖➖➖
 <b>Username</b> : <code>{username}</code>
+<b>Usage</b> : <code>{user_lifetime_traffic_GB}</code>
 ➖➖➖➖➖➖➖➖➖
 <b>Belongs To :</b> <code>{belong_to}</code>
 <b>By</b> : <b>#{by}</b>\
     '''.format(
         belong_to=escape_html(admin.username) if admin else None,
         by=escape_html(by),
-        username=escape_html(username)
+        username=escape_html(username),
+        user_lifetime_traffic_GB=escape_html(user_lifetime_traffic_GB)
     )
     return report(chat_id=admin.telegram_id if admin and admin.telegram_id else None, text=text)
 

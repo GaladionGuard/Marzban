@@ -144,6 +144,7 @@ def remove_user(
     admin: Admin = Depends(Admin.get_current),
 ):
     """Remove a user"""
+    user_lifetime_traffic = dbuser.lifetime_used_traffic
     crud.remove_user(db, dbuser)
     bg.add_task(xray.operations.remove_user, dbuser=dbuser)
 
@@ -151,7 +152,8 @@ def remove_user(
         report.user_deleted,
         username=dbuser.username,
         user_admin=dbuser.admin,
-        by=admin
+        by=admin,
+        user_lifetime_traffic=user_lifetime_traffic
     )
 
     logger.info(f"User \"{dbuser.username}\" deleted")

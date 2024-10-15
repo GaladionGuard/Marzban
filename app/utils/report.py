@@ -107,10 +107,10 @@ def user_updated(user: UserResponse, by: Admin, user_admin: Admin = None) -> Non
             pass
 
 
-def user_deleted(username: str, by: Admin, user_admin: Admin = None) -> None:
+def user_deleted(username: str, by: Admin, user_admin: Admin = None, user_lifetime_traffic: int = 0) -> None:
     if NOTIFY_USER_DELETED:
         try:
-            telegram.report_user_deletion(username=username, by=by.username, admin=user_admin)
+            telegram.report_user_deletion(username=username, by=by.username, admin=user_admin, user_lifetime_traffic=user_lifetime_traffic)
         except Exception:
             pass
         notify(UserDeleted(username=username, action=Notification.Type.user_deleted, by=by))
