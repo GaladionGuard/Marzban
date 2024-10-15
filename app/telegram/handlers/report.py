@@ -105,7 +105,7 @@ def report_user_modification(
 
 def report_user_deletion(username: str, by: str, admin: Admin = None, user_lifetime_traffic: int = 0):
     user_lifetime_traffic_GB = user_lifetime_traffic / (1024 ** 3)
-    user_lifetime_traffic_GB = round(user_lifetime_traffic_GB, 2)
+    user_lifetime_traffic_GB = round(user_lifetime_traffic_GB, 3)
     user_lifetime_traffic_GB = f"{user_lifetime_traffic_GB} GB"
     text = '''\
 🗑 <b>#Deleted</b>
