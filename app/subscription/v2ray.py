@@ -51,6 +51,10 @@ class V2rayShareLink(str):
         else:
             path = old_path
 
+        selected_fingerprint = inbound.get("fp", "")
+        if selected_fingerprint == "random":
+            selected_fingerprint = choice(["chrome", "firefox", "edge", "safari"])
+
         if inbound["protocol"] == "vmess":
             link = self.vmess(
                 remark=remark,
@@ -60,7 +64,7 @@ class V2rayShareLink(str):
                 net=net,
                 tls=inbound["tls"],
                 sni=inbound.get("sni", ""),
-                fp=inbound.get("fp", ""),
+                fp=selected_fingerprint,
                 alpn=inbound.get("alpn", ""),
                 pbk=inbound.get("pbk", ""),
                 sid=inbound.get("sid", ""),
@@ -87,7 +91,7 @@ class V2rayShareLink(str):
                 net=net,
                 tls=inbound["tls"],
                 sni=inbound.get("sni", ""),
-                fp=inbound.get("fp", ""),
+                fp=selected_fingerprint,
                 alpn=inbound.get("alpn", ""),
                 pbk=inbound.get("pbk", ""),
                 sid=inbound.get("sid", ""),
@@ -114,7 +118,7 @@ class V2rayShareLink(str):
                 net=net,
                 tls=inbound["tls"],
                 sni=inbound.get("sni", ""),
-                fp=inbound.get("fp", ""),
+                fp=selected_fingerprint,
                 alpn=inbound.get("alpn", ""),
                 pbk=inbound.get("pbk", ""),
                 sid=inbound.get("sid", ""),
