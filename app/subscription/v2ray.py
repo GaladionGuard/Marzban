@@ -616,24 +616,22 @@ class V2rayJsonConfig(str):
     def http_config(self, net="http", path: str = "", host: str = "", random_user_agent: bool = False) -> dict:
         if net == "h2":
             config = copy.deepcopy(self.settings.get("h2Settings", {
-                "header": {}
+                "headers": {}
             }))
         elif net == "h3":
             config = copy.deepcopy(self.settings.get("h3Settings", {
-                "header": {}
+                "headers": {}
             }))
         else:
-            config = self.settings.get("httpSettings", {
-                "header": {}
-            })
-        if "header" not in config:
-            config["header"] = {}
+            config = copy.deepcopy(self.settings.get("httpSettings", {
+                "headers": {}
+            }))
+        if "headers" not in config:
+            config["headers"] = {}
 
         config["path"] = path
         if host:
             config["host"] = [host]
-        else:
-            config["host"] = []
         if random_user_agent:
             config["headers"]["User-Agent"] = [
                 choice(self.user_agent_list)]
