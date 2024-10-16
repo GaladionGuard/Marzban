@@ -480,8 +480,6 @@ class V2rayJsonConfig(str):
             tlsSettings["alpn"] = [alpn] if not isinstance(
                 alpn, list) else alpn
 
-        tlsSettings["show"] = False
-
         return tlsSettings
 
     @staticmethod
@@ -492,9 +490,6 @@ class V2rayJsonConfig(str):
             realitySettings["serverName"] = sni
         if fp:
             realitySettings["fingerprint"] = fp
-
-        realitySettings["show"] = False
-
         if pbk:
             realitySettings["publicKey"] = pbk
         if sid:
@@ -512,7 +507,7 @@ class V2rayJsonConfig(str):
         if path:
             wsSettings["path"] = path
         if host:
-            wsSettings["headers"]["Host"] = host
+            wsSettings["host"] = host
         if random_user_agent:
             wsSettings["headers"]["User-Agent"] = choice(self.user_agent_list)
 
@@ -737,8 +732,6 @@ class V2rayJsonConfig(str):
                     "users": [
                         {
                             "id": id,
-                            "alterId": 0,
-                            "email": "https://gozargah.github.io/marzban/",
                             "security": "auto"
                         }
                     ],
@@ -756,10 +749,7 @@ class V2rayJsonConfig(str):
                     "users": [
                         {
                             "id": id,
-                            "security": "auto",
                             "encryption": "none",
-                            "email": "https://gozargah.github.io/marzban/",
-                            "alterId": 0,
                             "flow": flow
                         }
                     ],
@@ -774,8 +764,7 @@ class V2rayJsonConfig(str):
                 {
                     "address": address,
                     "port": port,
-                    "password": password,
-                    "email": "https://gozargah.github.io/marzban/",
+                    "password": password
                 }
             ]
         }
@@ -788,9 +777,9 @@ class V2rayJsonConfig(str):
                     "address": address,
                     "port": port,
                     "password": password,
-                    "email": "https://gozargah.github.io/marzban/",
                     "method": method,
-                    "uot": False,
+                    "uot": True,
+                    "UoTVersion": 2
                 }
             ]
         }
@@ -950,7 +939,7 @@ class V2rayJsonConfig(str):
             if net in ('tcp', 'raw', 'kcp') and headers != 'http' and tls in ('tls', 'reality'):
                 flow = settings.get('flow', '')
             else:
-                flow = None
+                flow = ""
 
             outbound["settings"] = self.vless_config(address=address,
                                                      port=port,
