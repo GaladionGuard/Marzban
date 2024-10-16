@@ -528,13 +528,7 @@ class V2rayJsonConfig(str):
 
         return httpupgradeSettings
 
-    def splithttp_config(self, path: str = "", host: str = "", random_user_agent: bool = False,
-                         sc_max_each_post_bytes: int = 1000000,
-                         sc_max_concurrent_posts: int = 100,
-                         sc_min_posts_interval_ms: int = 30,
-                         x_padding_bytes: str = "100-1000",
-                         xmux: dict = {},
-                         ) -> dict:
+    def splithttp_config(self, path: str = "", host: str = "", random_user_agent: bool = False) -> dict:
         config = copy.deepcopy(self.settings.get("splithttpSettings", {}))
 
         if path:
@@ -544,18 +538,6 @@ class V2rayJsonConfig(str):
         if random_user_agent:
             config["headers"]["User-Agent"] = choice(
                 self.user_agent_list)
-        # before 1.8.23
-        config["maxUploadSize"] = sc_max_each_post_bytes
-        config["maxConcurrentUploads"] = sc_max_concurrent_posts
-        # 1.8.23 and later
-        config["scMaxEachPostBytes"] = sc_max_each_post_bytes
-        config["scMaxConcurrentPosts"] = sc_max_concurrent_posts
-        config["scMinPostsIntervalMs"] = sc_min_posts_interval_ms
-        config["xPaddingBytes"] = x_padding_bytes
-        if xmux:
-            config["xmux"] = xmux
-
-        # core will ignore unknown variables
 
         return config
 
@@ -843,12 +825,7 @@ class V2rayJsonConfig(str):
                             ais='',
                             dialer_proxy='',
                             multiMode: bool = False,
-                            random_user_agent: bool = False,
-                            sc_max_each_post_bytes: int = 1000000,
-                            sc_max_concurrent_posts: int = 100,
-                            sc_min_posts_interval_ms: int = 30,
-                            x_padding_bytes: str = "100-1000",
-                            xmux: dict = {},
+                            random_user_agent: bool = False
                             ) -> dict:
 
         if net == "ws":
@@ -873,13 +850,8 @@ class V2rayJsonConfig(str):
             network_setting = self.httpupgrade_config(
                 path=path, host=host, random_user_agent=random_user_agent)
         elif net == "splithttp":
-            network_setting = self.splithttp_config(path=path, host=host, random_user_agent=random_user_agent,
-                                                    sc_max_each_post_bytes=sc_max_each_post_bytes,
-                                                    sc_max_concurrent_posts=sc_max_concurrent_posts,
-                                                    sc_min_posts_interval_ms=sc_min_posts_interval_ms,
-                                                    x_padding_bytes=x_padding_bytes,
-                                                    xmux=xmux,
-                                                    )
+            network_setting = self.splithttp_config(
+                path=path, host=host, random_user_agent=random_user_agent)
         else:
             network_setting = {}
 
@@ -980,12 +952,7 @@ class V2rayJsonConfig(str):
             ais=inbound.get('ais', ''),
             dialer_proxy=dialer_proxy,
             multiMode=multi_mode,
-            random_user_agent=inbound.get('random_user_agent', False),
-            sc_max_each_post_bytes=inbound.get('scMaxEachPostBytes', 1000000),
-            sc_max_concurrent_posts=inbound.get('scMaxConcurrentPosts', 100),
-            sc_min_posts_interval_ms=inbound.get('scMinPostsIntervalMs', 30),
-            x_padding_bytes=inbound.get("xPaddingBytes", "100-1000"),
-            xmux=inbound.get("xmux", {}),
+            random_user_agent=inbound.get('random_user_agent', False)
         )
 
         mux_json = json.loads(self.mux_template)
