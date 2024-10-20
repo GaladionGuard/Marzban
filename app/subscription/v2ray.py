@@ -799,14 +799,23 @@ class V2rayJsonConfig(str):
         if noises:
             dialer_settings["noises"] = V2rayJsonConfig.make_noises(noises)
 
-        if dialer_settings:
-            return {
-                "tag": "dialer",
-                "protocol": "freedom",
-                "settings": dialer_settings
+        if not dialer_settings:
+            return None
+
+        outbound = {
+            "tag": "dialer",
+            "protocol": "freedom",
+            "settings": dialer_settings
+        }
+
+        if fragment:
+            outbound["streamSettings"] = {
+                "sockopt": {
+                    "tcpNoDelay": True
+                }
             }
 
-        return None
+        return outbound
 
     def make_stream_setting(self,
                             net='',
