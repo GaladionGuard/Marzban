@@ -944,6 +944,11 @@ class V2rayJsonConfig(str):
             outbounds.append(extra_outbound)
 
         alpn = inbound.get('alpn', None)
+
+        selected_fingerprint = inbound.get("fp", "")
+        if selected_fingerprint == "random":
+            selected_fingerprint = choice(["chrome", "firefox", "edge", "safari"])
+
         outbound["streamSettings"] = self.make_stream_setting(
             net=net,
             tls=tls,
@@ -951,7 +956,7 @@ class V2rayJsonConfig(str):
             host=inbound['host'],
             path=path,
             alpn=alpn.rsplit(sep=",") if alpn else None,
-            fp=inbound.get('fp', ''),
+            fp=selected_fingerprint,
             pbk=inbound.get('pbk', ''),
             sid=inbound.get('sid', ''),
             spx=inbound.get('spx', ''),
