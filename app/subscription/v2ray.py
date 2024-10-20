@@ -781,11 +781,13 @@ class V2rayJsonConfig(str):
             try:
                 tp, delay = n.split(',')
                 _type, packet = tp.split(":")
-                noises_settings.append({
+                noise = {
                     "type": _type,
-                    "packet": packet,
-                    "delay": delay
-                })
+                    "packet": packet
+                }
+                if delay != "0":
+                    noise["delay"] = delay
+                noises_settings.append(noise)
             except ValueError:
                 pass
 
